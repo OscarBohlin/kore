@@ -14,6 +14,9 @@ INCLUDE_DIR=$(PREFIX)/include/kore
 TLS_BACKEND?=openssl
 KORE_TMPDIR?=/tmp
 
+# Seconds since the epoch
+SOURCE_DATE_EPOCH ?= $(shell date +%s)
+
 TOOLS=	kore-serve
 
 GENERATED=
@@ -203,7 +206,7 @@ $(VERSION): $(OBJDIR) force
 		exit 1; \
 	fi
 	@printf "const char *kore_build_date = \"%s\";\n" \
-	    `date +"%Y-%m-%d"` >> $(VERSION);
+	    `date -d @$(SOURCE_DATE_EPOCH) +"%Y-%m-%d"` >> $(VERSION);
 
 $(KODEV): src/cli.c
 	$(MAKE) -C kodev
